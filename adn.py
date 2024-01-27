@@ -84,7 +84,7 @@ def translate_to_proteins(rna_sequence):
         if element in table:
             amino_acid = table[element]
             if amino_acid == 'Stop':
-                break  # Terminer la traduction si nous atteignons un codon STOP
+                break 
             proteins.append(amino_acid)
 
     return proteins
