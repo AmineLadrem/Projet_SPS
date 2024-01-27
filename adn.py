@@ -32,8 +32,18 @@ table = {
 
 
 def generate_adn(length):
-    bases = ['A', 'T', 'C', 'G']
-    random_adn_sequence = ''.join(random.choice(bases) for _ in range(length))
+    bases = {
+        'A': ['GCT', 'GCC', 'GCA', 'GCG'],
+        'T': ['ACT', 'ACC', 'ACA', 'ACG'],
+        'C': ['TGT', 'TGC', 'TGA', 'TGG'],
+        'G': ['GGT', 'GGC', 'GGA', 'GGG', 'GAG', 'GAA', 'GAT', 'GAC']
+    }
+    random_adn_sequence = ''
+    for _ in range(length):
+        base = random.choice(list(bases.keys()))
+        codon = random.choice(bases[base])
+        random_adn_sequence += codon
+
     return random_adn_sequence
 
 
