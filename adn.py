@@ -33,54 +33,54 @@ table = {
 
 def generate_adn(length):
     bases = ['A', 'T', 'C', 'G']
-    random_dna_sequence = ''.join(random.choice(bases) for _ in range(length))
-    return random_dna_sequence
+    random_adn_sequence = ''.join(random.choice(bases) for _ in range(length))
+    return random_adn_sequence
 
 
-def read_dna_sequence_from_file(file_path):
+def read_adn_file(file_path):
     try:
         with open(file_path, 'r') as file:
             first_line = file.readline().strip()
             if first_line.startswith('>'):
                 description = first_line[1:]
-                dna_sequence = ''.join(line.strip() for line in file.readlines())
+                adn_sequence = ''.join(line.strip() for line in file.readlines())
             else:
-                dna_sequence = first_line
+                adn_sequence = first_line
                 for line in file:
-                    dna_sequence += line.strip()
+                    adn_sequence += line.strip()
 
-        return description, dna_sequence
+        return description, adn_sequence
     except FileNotFoundError:
         print(f"Le fichier '{file_path}' est introuvable.")
         return None, None
 
 
-def is_valid_dna_sequence(dna_sequence):
+def is_adn_valid(adn_sequence):
     valid_bases = {'A', 'C', 'G', 'T'}
-    if all(base in valid_bases for base in dna_sequence) :
+    if all(base in valid_bases for base in adn_sequence) :
         print("La séquence ADN est valide.")
     else:
         print("La séquence ADN est invalide.")    
 
 
-def calculate_base_frequencies(dna_sequence):
+def bases_freq(adn_sequence):
     base_counts = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
-    total_bases = len(dna_sequence)
+    total_bases = len(adn_sequence)
 
-    for base in dna_sequence:
+    for base in adn_sequence:
         if base in base_counts:
             base_counts[base] += 1
 
     base_frequencies = {base: count / total_bases for base, count in base_counts.items()}
     return base_frequencies
 
-def transcribe_to_rna(dna_sequence):
-    return dna_sequence.replace('T', 'U')
+def translate_to_arn(adn_sequence):
+    return adn_sequence.replace('T', 'U')
 
-def translate_to_proteins(rna_sequence):
+def translate_to_proteins(arn_sequence):
     proteins = []
-    for i in range(0, len(rna_sequence), 3):
-        element = rna_sequence[i:i + 3]
+    for i in range(0, len(arn_sequence), 3):
+        element = arn_sequence[i:i + 3]
         if element in table:
             amino_acid = table[element]
             if amino_acid == 'Stop':
@@ -90,24 +90,24 @@ def translate_to_proteins(rna_sequence):
     return proteins
 
 
-def reverse_complement(dna_sequence):
+def reverse_complement(adn_sequence):
     complement = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
-    reversed_sequence = dna_sequence[::-1]
+    reversed_sequence = adn_sequence[::-1]
     complement_sequence = ''.join(complement[base] for base in reversed_sequence)
     return complement_sequence
 
-def calculate_gc_content(dna_sequence):
-    gc_count = dna_sequence.count('G') + dna_sequence.count('C')
-    total_bases = len(dna_sequence)
+def calculate_gc_content(adn_sequence):
+    gc_count = adn_sequence.count('G') + adn_sequence.count('C')
+    total_bases = len(adn_sequence)
     gc_content = (gc_count / total_bases) * 100
     return gc_content
 
-def calculate_codon_frequencies(dna_sequence):
+def calculate_codon_frequencies(adn_sequence):
     codon_length = 3
     codon_counts = {}
 
-    for i in range(0, len(dna_sequence) - codon_length + 1, codon_length):
-        codon = dna_sequence[i:i + codon_length]
+    for i in range(0, len(adn_sequence) - codon_length + 1, codon_length):
+        codon = adn_sequence[i:i + codon_length]
         if len(codon) == codon_length:
             if codon in codon_counts:
                 codon_counts[codon] += 1
@@ -119,11 +119,11 @@ def calculate_codon_frequencies(dna_sequence):
     return codon_frequencies
 
 
-def mutate_dna_sequence(dna_sequence, mutation_rate):
+def mutate_adn_sequence(adn_sequence, mutation_rate):
     mutation_types = ['A', 'C', 'G', 'T']
     mutated_sequence = ''
 
-    for base in dna_sequence:
+    for base in adn_sequence:
         if random.random() < mutation_rate:
             mutated_sequence += random.choice(mutation_types)
         else:
@@ -132,18 +132,18 @@ def mutate_dna_sequence(dna_sequence, mutation_rate):
     return mutated_sequence
 
 
-def find_motif(dna_sequence, motif):
+def adn_motif(adn_sequence, motif):
     positions = []
     motif_length = len(motif)
-    sequence_length = len(dna_sequence)
+    sequence_length = len(adn_sequence)
 
     for i in range(sequence_length - motif_length + 1):
-        if dna_sequence[i:i + motif_length] == motif:
+        if adn_sequence[i:i + motif_length] == motif:
             positions.append(i)
 
     return positions
 
-def generate_consensus_and_profile(aligned_sequences):
+def generate_consensus_profile(aligned_sequences):
     profile_matrix = {'A': [], 'C': [], 'G': [], 'T': []}
     consensus_sequence = ''
 
