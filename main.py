@@ -125,9 +125,22 @@ def main():
             input("Press Enter to go back to the menu...")
             
         if choice == 12:
-            consensus_sequence, profile_matrix = generate_consensus_profile(adn_sequence)
-            print(consensus_sequence)
-            print(profile_matrix)
+            filename = input("Veuillez entrer le chemin / nom du fichier: ")
+
+            try:
+             with open(filename, 'r') as file:
+              fasta_data = file.read()
+            except FileNotFoundError:
+             print("File not found.")
+             input("Press Enter to go back to the menu...")
+             continue
+
+            sequences = parse_fasta(fasta_data)
+            consensus_sequence, profile_matrix = generate_consensus_profile(sequences)
+            print("Consensus Sequence:", consensus_sequence)
+            for base, frequencies in profile_matrix.items():
+             print(f"{base}: {' '.join(map(str, frequencies))}")
+
             input("Press Enter to go back to the menu...")
             
         if choice == 13:

@@ -134,6 +134,7 @@ def reverse_complement(adn_sequence):
     complement_sequence = ''.join(complement[base] for base in reversed_sequence)
     return complement_sequence
 
+
 def calculate_gc_content(adn_sequence):
     """
     Calcule le pourcentage de bases G et C dans une séquence d'ADN.
@@ -201,6 +202,26 @@ def adn_motif(adn_sequence, motif):
 
     return positions
 
+def parse_fasta(fasta_data):
+    """
+    Parse les données FASTA et renvoie une liste de séquences.
+    """
+    sequences = []
+    current_sequence = ''
+    
+    for line in fasta_data.split('\n'):
+        if line.startswith('>'):
+            if current_sequence:
+                sequences.append(current_sequence)
+                current_sequence = ''
+        else:
+            current_sequence += line.strip()
+    
+    if current_sequence:
+        sequences.append(current_sequence)
+    
+    return sequences
+
 def generate_consensus_profile(aligned_sequences):
     """
     Génère un profil de consensus à partir de séquences alignées.
@@ -213,7 +234,7 @@ def generate_consensus_profile(aligned_sequences):
     sequence_length = len(aligned_sequences[0])
 
     for i in range(sequence_length):
-        column = [sequence[i] for sequence in aligned_sequences]
+        column = [sequence[i] for sequence in aligned_sequences if sequence[i] in 'ACGT']
         for base in profile_matrix.keys():
             profile_matrix[base].append(column.count(base) / len(aligned_sequences))
 
